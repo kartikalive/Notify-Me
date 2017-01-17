@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="E:\Data\Kartik\Study\Notify Me\NotifyMe\app\build\intermediates\exploded-aar\com.android.support\appcompat-v7\25.0.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="f7ac4b327fdb9e2ee386f5adc46164927658de4b">
+        <dex dex="E:\Data\Kartik\Study\Notify Me\NotifyMe\app\build\intermediates\pre-dexed\debug\com.android.support-appcompat-v7-25.0.1_0e588d59ab1f02405eab423e62f6d858502a16c5.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Data\Kartik\Study\Notify Me\NotifyMe\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\25.0.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="bc7e99e8d0fc279a05aa91378530f467ad62d443">
+        <dex dex="E:\Data\Kartik\Study\Notify Me\NotifyMe\app\build\intermediates\pre-dexed\debug\com.android.support-support-core-ui-25.0.1_ebb9dbe1823d88b74e8a1f38fa7af9725b7de6a8.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Data\Kartik\Study\Notify Me\NotifyMe\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.0.1\jars\libs\internal_impl-25.0.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="c0bd6ffb002a85b5e7cad29f8558d1cc59539679">
+        <dex dex="E:\Data\Kartik\Study\Notify Me\NotifyMe\app\build\intermediates\pre-dexed\debug\internal_impl-25.0.1_389568ecdea380ca75b6c6ab74b6e5bfab1ac2aa.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Data\Kartik\Study\Notify Me\NotifyMe\app\build\intermediates\exploded-aar\com.android.support\support-vector-drawable\25.0.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="b24e1c688744078e1fa833ffadf696794761bbe5">
+        <dex dex="E:\Data\Kartik\Study\Notify Me\NotifyMe\app\build\intermediates\pre-dexed\debug\com.android.support-support-vector-drawable-25.0.1_cc5428fc64d49520f1cb88df1454ea858873c4b0.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\kartik1\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\25.0.1\support-annotations-25.0.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="a09194311f8f89c3e6db09d79f50897a889d615e">
+        <dex dex="E:\Data\Kartik\Study\Notify Me\NotifyMe\app\build\intermediates\pre-dexed\debug\support-annotations-25.0.1_e7997161cab14b066b516fbd52bd5270f3a1f3dd.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Data\Kartik\Study\Notify Me\NotifyMe\app\build\intermediates\exploded-aar\com.android.support\support-fragment\25.0.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="26c6eef571592c91f29e56fda0bac73321de0c92">
+        <dex dex="E:\Data\Kartik\Study\Notify Me\NotifyMe\app\build\intermediates\pre-dexed\debug\com.android.support-support-fragment-25.0.1_f09a03692afb305515027af52f134cbc8e871767.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Data\Kartik\Study\Notify Me\NotifyMe\app\build\intermediates\exploded-aar\com.android.support\support-core-ui\25.0.1\jars\libs\internal_impl-25.0.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="e5343c9d19cb19ff55f6b268c7f3fe8c9d224f6f">
+        <dex dex="E:\Data\Kartik\Study\Notify Me\NotifyMe\app\build\intermediates\pre-dexed\debug\internal_impl-25.0.1_43d75a4960112c5723f85aa52dc7064a953b24e0.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Data\Kartik\Study\Notify Me\NotifyMe\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.0.1\jars\libs\internal_impl-25.0.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="f83b00041ecfba705603fec40363416c7de69719">
+        <dex dex="E:\Data\Kartik\Study\Notify Me\NotifyMe\app\build\intermediates\pre-dexed\debug\internal_impl-25.0.1_4ea0a07d3a6884e3cc1d5fe3bc5d450f03379139.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Data\Kartik\Study\Notify Me\NotifyMe\app\build\intermediates\exploded-aar\com.android.support\support-compat\25.0.1\jars\libs\internal_impl-25.0.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="3af8cc51ef7088e56f132780da8c0bd858b6a6ad">
+        <dex dex="E:\Data\Kartik\Study\Notify Me\NotifyMe\app\build\intermediates\pre-dexed\debug\internal_impl-25.0.1_610a3dd575031ab0d0d59dad5d5591f95c4636db.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Data\Kartik\Study\Notify Me\NotifyMe\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\25.0.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="00d4c8eebf2b681073c72a26bd0849549e51c7cb">
+        <dex dex="E:\Data\Kartik\Study\Notify Me\NotifyMe\app\build\intermediates\pre-dexed\debug\com.android.support-support-core-utils-25.0.1_4e5c1c579caaf98b6afe68f1e247ae2f5e95bc9c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Data\Kartik\Study\Notify Me\NotifyMe\app\build\intermediates\exploded-aar\com.android.support\support-v4\25.0.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="E:\Data\Kartik\Study\Notify Me\NotifyMe\app\build\intermediates\pre-dexed\debug\com.android.support-support-v4-25.0.1_e00890807cf1c1719bc99de0b6278a116e2d2a3c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Data\Kartik\Study\Notify Me\NotifyMe\app\build\intermediates\exploded-aar\com.android.support\support-media-compat\25.0.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="6a1479afe9f1b3645e1cd9a87318976893472818">
+        <dex dex="E:\Data\Kartik\Study\Notify Me\NotifyMe\app\build\intermediates\pre-dexed\debug\com.android.support-support-media-compat-25.0.1_bab2f2e2dcbc2e5b116b10f2eebeb0b3a7fbaa9a.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Data\Kartik\Study\Notify Me\NotifyMe\app\build\intermediates\exploded-aar\com.android.support\animated-vector-drawable\25.0.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="772bed2d992b67b9d0327f766cc95cd63031dcd3">
+        <dex dex="E:\Data\Kartik\Study\Notify Me\NotifyMe\app\build\intermediates\pre-dexed\debug\com.android.support-animated-vector-drawable-25.0.1_d72174a3fa9f902494fc3a8b315d938226e15ad2.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Data\Kartik\Study\Notify Me\NotifyMe\app\build\intermediates\exploded-aar\com.android.support\support-core-utils\25.0.1\jars\libs\internal_impl-25.0.1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="c5b7145fb34779b6639147b8f2f8dd77c0db771b">
+        <dex dex="E:\Data\Kartik\Study\Notify Me\NotifyMe\app\build\intermediates\pre-dexed\debug\internal_impl-25.0.1_0430ecf5511fdc1c9f9c71dd06b5e852a0644238.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Program Files\Android\Android Studio\gradle\m2repository\commons-codec\commons-codec\1.10\commons-codec-1.10.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="4b95f4897fa13f2cd904aee711aeafc0c5295cd8">
+        <dex dex="E:\Data\Kartik\Study\Notify Me\NotifyMe\app\build\intermediates\pre-dexed\debug\commons-codec-1.10_77183437e43d03fbf04d48242f704eeda6368256.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="E:\Data\Kartik\Study\Notify Me\NotifyMe\app\build\intermediates\exploded-aar\com.android.support\support-compat\25.0.1\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.1"
+        sha1="51eba4a4dd73044f90a9d58dd7ca34adbebfcf4e">
+        <dex dex="E:\Data\Kartik\Study\Notify Me\NotifyMe\app\build\intermediates\pre-dexed\debug\com.android.support-support-compat-25.0.1_d2f61496b69c5ad5346c7a9106edc2ff0f28e4ba.jar" />
+    </item>
+
+</items>
