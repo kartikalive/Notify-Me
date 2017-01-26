@@ -5,16 +5,7 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="kartik.notifyme.MainActivity">
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:id="@+id/scroll1">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -24,22 +15,16 @@
             <WebView
                 android:layout_width="match_parent"
                 android:id="@+id/web"
-                android:layout_height="match_parent"></WebView>
+                android:layout_height="200dp"></WebView>
+
+            <android.support.v7.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/web"
+                android:id="@+id/recycler"
+                ></android.support.v7.widget.RecyclerView>
 
         </RelativeLayout>
 
-    </ScrollView>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="300dp"
-        android:layout_below="@+id/scroll1">
-
-        <Button
-            android:text="Button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/button"
-            android:onClick="showNotification"/>
-    </ScrollView>
 </RelativeLayout>

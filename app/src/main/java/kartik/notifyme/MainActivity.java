@@ -1,7 +1,5 @@
 package kartik.notifyme;
 
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.app.TaskStackBuilder;
 import android.content.Context;
@@ -13,7 +11,7 @@ import android.net.http.SslError;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.app.NotificationCompat;
+
 import android.text.Html;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -52,13 +50,7 @@ public class MainActivity extends AppCompatActivity {
     String rmStudent = "http://tnp.dtu.ac.in/rm_2016-17/intern/intern_student";
     WebView webview;
     ProgressDialog progressDialog;
-    ArrayList<String> contentList = new ArrayList<>(100);
-    ArrayList<String> timeList = new ArrayList<>(100);
-    ArrayList<String> dateList = new ArrayList<>(100);
-    public static final String PREF_NAME = "NotifyMe";
-    SharedPreferences preferences;
-    int flag;
-    public static final int DEFAULT = 1;
+
 
 //------------------------Unused--------------------------------------
     String str1 = "http://www.stackoverflow.com";
@@ -81,6 +73,8 @@ public class MainActivity extends AppCompatActivity {
     String info;
     String len;
     Button btn;
+//    RecyclerView recyclerView;
+//   public ViewAdapter viewAdapter;
 //------------------------------------------------------------------------------------------------------
 
     @Override
@@ -100,34 +94,14 @@ public class MainActivity extends AppCompatActivity {
     //    CookieSyncManager.createInstance(this);
      //   CookieSyncManager.getInstance().sync();
 
-        preferences = getSharedPreferences(PREF_NAME,MODE_PRIVATE);
-        flag = preferences.getInt("flag",DEFAULT);
-        if(flag==DEFAULT) {
-            Log.d("TAG15","flag: "+flag+"");
-            webScrapingFunc(rmLogin);
-        }
-        else if(flag==2){
-            Log.d("TAG15","flag: "+flag+"");
-            webScrapingFunc(rmStudent);
-        }
-    }
 
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//       // CookieSyncManager.getInstance().stopSync();
-//    }
-
-    public void webScrapingFunc(String url){
         webview = (WebView) findViewById(R.id.web);
         WebSettings settings = webview.getSettings();
-
         settings.setDomStorageEnabled(true);
         settings.setJavaScriptEnabled(true);
       //  settings.setLoadWithOverviewMode(true);
         settings.setUseWideViewPort(true);
-        webview.loadUrl(url);
-        webview.addJavascriptInterface(new MyJavaScriptInterface(),"HtmlHandler");
+
         webview.setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -147,21 +121,7 @@ public class MainActivity extends AppCompatActivity {
                     int temp = preferences.getInt("flag",0);
                     Log.d("TAG15","afterLogin: "+temp+"");
                     webview.loadUrl("javascript:window.HtmlHandler.handleHtml('<html>'+document.getElementsByTagName('body')[0].innerHTML+'</html>');");
-                   // webview.addJavascriptInterface(new MyJavaScriptInterface2(),"HtmlApply");
-                //    webview.loadUrl("javascript:window.HtmlApply.applyHtml('<html>'+document.getElementsByClassName('");
-           //         webview.loadUrl("javascript:document.getElementsByClassName('timeline-header')[0].click();"‌​);
-//                    <h4 class="timeline-header"><a href="http://tnp.dtu.ac.in/rm_2016-17/intern/intern_student/recruiter_profile/coe_rm_17_intern">COE INTERN ADMIN</a></h4>
-                   // body > div > div > section.content > div > div > ul.timeline > li:nth-child(2) > div > h4
-                   // body > div > div > section.content > div > div > ul.timeline > li:nth-child(4) > div > h4
-                }
 
-                if(url.equals(rmLogin)) {
-                    preferences = getSharedPreferences(PREF_NAME,MODE_PRIVATE);
-                    SharedPreferences.Editor editor = preferences.edit();
-                    editor.putInt("flag", 1);
-                    editor.commit();
-                    int temp = preferences.getInt("flag",0);
-                    Log.d("TAG15","afterLogout: "+temp+"");
                 }
                 progressDialog.dismiss();
                 Log.d("TAG5",url);
@@ -176,15 +136,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        webview.loadUrl(url);
-    }
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-        if(keyCode==KeyEvent.KEYCODE_BACK){
-            moveTaskToBack(true);
-            return true;
         }
 
         return super.onKeyDown(keyCode, event);
