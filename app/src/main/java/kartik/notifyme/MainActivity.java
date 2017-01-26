@@ -1,10 +1,13 @@
 package kartik.notifyme;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.net.http.SslError;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.util.Log;
 import android.webkit.JavascriptInterface;
@@ -38,9 +41,8 @@ public class MainActivity extends AppCompatActivity {
     String rmLogin = "http://tnp.dtu.ac.in/rm_2016-17/intern/intern_login";
     WebView webview;
     ProgressDialog progressDialog;
-    ArrayList<String> contentList = new ArrayList<>(100);
-    ArrayList<String> timeList = new ArrayList<>(100);
-    ArrayList<String> dateList = new ArrayList<>(100);
+    ArrayList<InternRowInfo> contentList;
+
 
 //------------------------Unused--------------------------------------
     String str1 = "http://www.stackoverflow.com";
@@ -64,6 +66,8 @@ public class MainActivity extends AppCompatActivity {
     String info;
     String len;
     Button btn;
+//    RecyclerView recyclerView;
+//   public ViewAdapter viewAdapter;
 //------------------------------------------------------------------------------------------------------
 
     @Override
@@ -83,19 +87,27 @@ public class MainActivity extends AppCompatActivity {
         webScrapingFunc();
     }
 
-
-
+//    private ArrayList<InternRowInfo> fillList() {
+//        ArrayList<InternRowInfo> temp=new ArrayList<>();
+//        for(int i=0;i<40;i++){
+//            temp.add(new InternRowInfo("ABCD","ABCD","ABCD","ABCD","ABCD"));
+//        }
+//        return temp;
+//    }
+//
+//    public void notifyme(){
+//        viewAdapter.notifyDataSetChanged();
+//    }
     public void webScrapingFunc(){
         webview = (WebView) findViewById(R.id.web);
         WebSettings settings = webview.getSettings();
-
         settings.setDomStorageEnabled(true);
         settings.setJavaScriptEnabled(true);
       //  settings.setLoadWithOverviewMode(true);
         settings.setUseWideViewPort(true);
         webview.loadUrl(rmLogin);
-        webview.addJavascriptInterface(new MyJavaScriptInterface(),"HtmlHandler");
-
+        final MyJavaScriptInterface myjava=new MyJavaScriptInterface(MainActivity.this);
+        webview.addJavascriptInterface(myjava,"HtmlHandler");
         webview.setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -108,6 +120,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 if(url.equals(rmStudent)) {
+                    webview.loadUrl("javascript:window.HtmlHandler.handleHtml('<html>'+document.getElementsByTagName('body')[0].innerHTML+'</html>');");
+
+                }
+
+                if(url.equals("http://tnp.dtu.ac.in/rm_2016-17/intern/intern_student/job_openings")){
+                    Log.d("Tag24","abcd");
                     webview.loadUrl("javascript:window.HtmlHandler.handleHtml('<html>'+document.getElementsByTagName('body')[0].innerHTML+'</html>');");
                 }
                 progressDialog.dismiss();
@@ -124,42 +142,131 @@ public class MainActivity extends AppCompatActivity {
         });
 
         webview.loadUrl(rmLogin);
+
+
     }
-}
 
-class MyJavaScriptInterface
-{
+    public class MyJavaScriptInterface {
+        Activity myactivity;
+        ArrayList<InternRowInfo> contentList=new ArrayList<>();
 
-    String[] contentList = new String[102];
-    String[] timeList = new String[102];
-    String[] dateList = new String[102];
 
-    @SuppressWarnings("unused")
-    @JavascriptInterface
-    public void handleHtml(String html) {
-        Log.d("TAG56", html);
-        Document doc = Jsoup.parse(html);
-        int n = 40;
-        for(int i=1;i<=n;i++) {
-            String contentSelector = "body > div > div > section.content > div > div > ul.timeline > li:nth-child("+2*i+") > div > div > p:nth-child(1)";
-            Elements contentElement = doc.select(contentSelector);
-            String singleContent = Html.fromHtml(contentElement.toString()).toString();
-            contentList[i] = singleContent;
+        public MyJavaScriptInterface( Activity myactivity) {
+            this.myactivity = myactivity;
+        }
 
-            String timeSelector = "body > div > div > section.content > div > div > ul.timeline > li:nth-child("+(2*i-1)+") > span";
-            Elements timeElement = doc.select(timeSelector);
-            String singleTime = Html.fromHtml(timeElement.toString()).toString();
-            timeList[i] = singleTime;
+        @SuppressWarnings("unused")
+        @JavascriptInterface
+        public void handleHtml(String html) {
 
-            String dateSelector = "body > div > div > section.content > div > div > ul.timeline > li:nth-child("+2*i+") > div > span";
-            Elements dateElement = doc.select(dateSelector);
-            String singleDate = Html.fromHtml(dateElement.toString()).toString();
-            dateList[i] = singleDate;
+            Log.d("TAG56", html);
+            Document doc = Jsoup.parse(html);
+            int n = 40;
+            for (int i = 1; i <= n; i++) {
+                String contentSelector = "body > div > div > section.content > div > div > ul.timeline > li:nth-child(" + (2 * i )+ ") > div > div ";
+                Elements contentElement = doc.select(contentSelector);
+                String singleContent = Html.fromHtml(contentElement.toString()).toString();
 
-            Log.d("TAG7", "i = " + i + "    Element = "+ contentList[i]+ "    Time = "+ timeList[i] + "    Date =  "+ dateList[i] + "\n\n");
+                String headingselector = "body > div > div > section.content > div > div > ul.timeline > li:nth-child(" + (2 * i) + ") > div > h4 > a";
+                Elements headingelement = doc.select(headingselector);
+                String singleheading = Html.fromHtml(headingelement.toString()).toString();
+
+                String dateSelector = "body > div > div > section.content > div > div > ul.timeline > li:nth-child(" + (2 * i - 1) + ") > span";
+                Elements dateElement = doc.select(dateSelector);
+                String singleDate = Html.fromHtml(dateElement.toString()).toString();
+
+                String timeSelector = "body > div > div > section.content > div > div > ul.timeline > li:nth-child(" + (2 * i) + ") > div > span";
+                Elements timeElement = doc.select(timeSelector);
+                String singleTime = Html.fromHtml(timeElement.toString()).toString();
+
+
+                contentList.add( new InternRowInfo(singleDate, singleheading, singleContent, singleTime));
+
+
+//            Log.d("TAG7", "i = " + i + "    Element = "+ contentList[i]+ "    Time = "+ timeList[i] + "    Date =  "+ dateList[i] + "\n\n");
+
+
+            }
+            Log.d("Tag12","1");
+
+            myactivity.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    ViewAdapter viewadptr = new ViewAdapter(myactivity, contentList);
+                    RecyclerView r=(RecyclerView)myactivity.findViewById(R.id.recycler);
+                    r.setAdapter(viewadptr);
+                    r.setLayoutManager(new LinearLayoutManager(myactivity));
+                    MyJavaScriptInterface2 Java2=new MyJavaScriptInterface2(MainActivity.this);
+                    webview.addJavascriptInterface(Java2,"HtmlHandler");
+                    webview.loadUrl("http://tnp.dtu.ac.in/rm_2016-17/intern/intern_student/job_openings");
+                }
+            });
+
+
+
+//        body > div > div > section.content > div > div > ul.timeline > li:nth-child(6) > div > div > div:nth-child(1)
+//        body > div > div > section.content > div > div > ul.timeline > li:nth-child(4) > div > div > p:nth-child(5) > font
+//        body > div > div > section.content > div > div > ul.timeline > li:nth-child(8) > div > div > table > tbody > tr:nth-child(1) > td:nth-child(1)
+//        body > div > div > section.content > div > div > ul.timeline > li:nth-child(10) > div > div > p:nth-child(3) > b > font
+//        body > div > div > section.content > div > div > ul.timeline > li:nth-child(20) > div > div
+//        body > div > div > section.content > div > div > ul.timeline > li:nth-child(24) > div > div > div:nth-child(1) > b
+//        body > div > div > section.content > div > div > ul.timeline > li:nth-child(14) > div > div > p:nth-child(1) > b > font
+//            body > div > div > section.content > div > div > ul.timeline > li:nth-child(6) > div > div > div:nth-child(1)
+//            body > div > div > section.content > div > div > ul.timeline > li:nth-child(2) > div > div
+        }
+    }
+
+
+    public class MyJavaScriptInterface2 {
+        Activity myactivity;
+        ArrayList<InternRowInfo> contentList=new ArrayList<>();
+
+
+        public MyJavaScriptInterface2( Activity myactivity) {
+            this.myactivity = myactivity;
+        }
+
+        @SuppressWarnings("unused")
+        @JavascriptInterface
+        public void handleHtml(String html) {
+            Document doc=Jsoup.parse(html);
+            for(int i=2;i<40;i++) {
+                String cnameselector = "#jobs_search > tbody > tr:nth-child("+i+") > td:nth-child(1) > a";
+                Elements cnameelement = doc.select(cnameselector);
+                String cname= Html.fromHtml(cnameelement.toString()).toString();
+                Log.d("Tag26", cname);
+
+                String appdselector="#jobs_search > tbody > tr:nth-child("+i+") > td:nth-child(3)";
+                Elements appdelement=doc.select(appdselector);
+                String appd=Html.fromHtml(appdelement.toString()).toString();
+                Log.d("Tag24",appd);
+
+                String branchselector="#jobs_search > tbody > tr:nth-child("+i+") > td:nth-child(2)";
+                Elements branchelement=doc.select(branchselector);
+                String branch=Html.fromHtml(branchelement.toString()).toString();
+                Log.d("Tag24",branch);
+
+                String dovselector="#jobs_search > tbody > tr:nth-child("+i+") > td:nth-child(7)";
+                Elements dovelements=doc.select(dovselector);
+                String dov=Html.fromHtml(dovelements.toString()).toString();
+                Log.d("Tag24",dov);
+            }
+
+
+//        body > div > div > section.content > div > div > ul.timeline > li:nth-child(6) > div > div > div:nth-child(1)
+//        body > div > div > section.content > div > div > ul.timeline > li:nth-child(4) > div > div > p:nth-child(5) > font
+//        body > div > div > section.content > div > div > ul.timeline > li:nth-child(8) > div > div > table > tbody > tr:nth-child(1) > td:nth-child(1)
+//        body > div > div > section.content > div > div > ul.timeline > li:nth-child(10) > div > div > p:nth-child(3) > b > font
+//        body > div > div > section.content > div > div > ul.timeline > li:nth-child(20) > div > div
+//        body > div > div > section.content > div > div > ul.timeline > li:nth-child(24) > div > div > div:nth-child(1) > b
+//        body > div > div > section.content > div > div > ul.timeline > li:nth-child(14) > div > div > p:nth-child(1) > b > font
+//            body > div > div > section.content > div > div > ul.timeline > li:nth-child(6) > div > div > div:nth-child(1)
+//            body > div > div > section.content > div > div > ul.timeline > li:nth-child(2) > div > div
         }
     }
 }
+
+
 
 
 //----------------------------------------------UNUSED CODE---------------------------------------------
