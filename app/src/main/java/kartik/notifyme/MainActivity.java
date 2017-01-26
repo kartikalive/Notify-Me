@@ -1,12 +1,25 @@
 package kartik.notifyme;
 
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.app.TaskStackBuilder;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.media.RingtoneManager;
+import android.net.Uri;
 import android.net.http.SslError;
 import android.os.StrictMode;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.NotificationCompat;
 import android.text.Html;
 import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 import android.webkit.JavascriptInterface;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebSettings;
@@ -36,11 +49,16 @@ import java.util.HashMap;
 public class MainActivity extends AppCompatActivity {
 
     String rmLogin = "http://tnp.dtu.ac.in/rm_2016-17/intern/intern_login";
+    String rmStudent = "http://tnp.dtu.ac.in/rm_2016-17/intern/intern_student";
     WebView webview;
     ProgressDialog progressDialog;
     ArrayList<String> contentList = new ArrayList<>(100);
     ArrayList<String> timeList = new ArrayList<>(100);
     ArrayList<String> dateList = new ArrayList<>(100);
+    public static final String PREF_NAME = "NotifyMe";
+    SharedPreferences preferences;
+    int flag;
+    public static final int DEFAULT = 1;
 
 //------------------------Unused--------------------------------------
     String str1 = "http://www.stackoverflow.com";
@@ -49,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
     String str2 = "http://www.tnp.dtu.ac.in/rm_2016-17/intern/intern_student";
     String str3 = "https://open-event.herokuapp.com/api/v2/events/4";
     String rmHandle = "http://tnp.dtu.ac.in/rm_2016-17/intern/intern_login/student_login_handle";
-    String rmStudent = "http://tnp.dtu.ac.in/rm_2016-17/intern/intern_student";
     final String USER_AGENT = "\"Mozilla/5.0 (Windows NT\" +\n" +
             "          \" 6.1; WOW64) AppleWebKit/535.2 (KHTML, like Gecko) Chrome/15.0.874.120 Safari/535.2\"";
     HashMap<String, String> cookies = new HashMap<>();
@@ -80,12 +97,28 @@ public class MainActivity extends AppCompatActivity {
 
         progressDialog = ProgressDialog.show(this, "Loading", "Please wait...", true);
         progressDialog.setCancelable(false);
-        webScrapingFunc();
+    //    CookieSyncManager.createInstance(this);
+     //   CookieSyncManager.getInstance().sync();
+
+        preferences = getSharedPreferences(PREF_NAME,MODE_PRIVATE);
+        flag = preferences.getInt("flag",DEFAULT);
+        if(flag==DEFAULT) {
+            Log.d("TAG15","flag: "+flag+"");
+            webScrapingFunc(rmLogin);
+        }
+        else if(flag==2){
+            Log.d("TAG15","flag: "+flag+"");
+            webScrapingFunc(rmStudent);
+        }
     }
 
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//       // CookieSyncManager.getInstance().stopSync();
+//    }
 
-
-    public void webScrapingFunc(){
+    public void webScrapingFunc(String url){
         webview = (WebView) findViewById(R.id.web);
         WebSettings settings = webview.getSettings();
 
@@ -93,9 +126,8 @@ public class MainActivity extends AppCompatActivity {
         settings.setJavaScriptEnabled(true);
       //  settings.setLoadWithOverviewMode(true);
         settings.setUseWideViewPort(true);
-        webview.loadUrl(rmLogin);
+        webview.loadUrl(url);
         webview.addJavascriptInterface(new MyJavaScriptInterface(),"HtmlHandler");
-
         webview.setWebViewClient(new WebViewClient(){
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -108,7 +140,28 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 if(url.equals(rmStudent)) {
+                    preferences = getSharedPreferences(PREF_NAME,MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putInt("flag", 2);
+                    editor.commit();
+                    int temp = preferences.getInt("flag",0);
+                    Log.d("TAG15","afterLogin: "+temp+"");
                     webview.loadUrl("javascript:window.HtmlHandler.handleHtml('<html>'+document.getElementsByTagName('body')[0].innerHTML+'</html>');");
+                   // webview.addJavascriptInterface(new MyJavaScriptInterface2(),"HtmlApply");
+                //    webview.loadUrl("javascript:window.HtmlApply.applyHtml('<html>'+document.getElementsByClassName('");
+           //         webview.loadUrl("javascript:document.getElementsByClassName('timeline-header')[0].click();"‌​);
+//                    <h4 class="timeline-header"><a href="http://tnp.dtu.ac.in/rm_2016-17/intern/intern_student/recruiter_profile/coe_rm_17_intern">COE INTERN ADMIN</a></h4>
+                   // body > div > div > section.content > div > div > ul.timeline > li:nth-child(2) > div > h4
+                   // body > div > div > section.content > div > div > ul.timeline > li:nth-child(4) > div > h4
+                }
+
+                if(url.equals(rmLogin)) {
+                    preferences = getSharedPreferences(PREF_NAME,MODE_PRIVATE);
+                    SharedPreferences.Editor editor = preferences.edit();
+                    editor.putInt("flag", 1);
+                    editor.commit();
+                    int temp = preferences.getInt("flag",0);
+                    Log.d("TAG15","afterLogout: "+temp+"");
                 }
                 progressDialog.dismiss();
                 Log.d("TAG5",url);
@@ -123,43 +176,90 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        webview.loadUrl(rmLogin);
+        webview.loadUrl(url);
     }
-}
 
-class MyJavaScriptInterface
-{
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-    String[] contentList = new String[102];
-    String[] timeList = new String[102];
-    String[] dateList = new String[102];
-
-    @SuppressWarnings("unused")
-    @JavascriptInterface
-    public void handleHtml(String html) {
-        Log.d("TAG56", html);
-        Document doc = Jsoup.parse(html);
-        int n = 40;
-        for(int i=1;i<=n;i++) {
-            String contentSelector = "body > div > div > section.content > div > div > ul.timeline > li:nth-child("+2*i+") > div > div > p:nth-child(1)";
-            Elements contentElement = doc.select(contentSelector);
-            String singleContent = Html.fromHtml(contentElement.toString()).toString();
-            contentList[i] = singleContent;
-
-            String timeSelector = "body > div > div > section.content > div > div > ul.timeline > li:nth-child("+(2*i-1)+") > span";
-            Elements timeElement = doc.select(timeSelector);
-            String singleTime = Html.fromHtml(timeElement.toString()).toString();
-            timeList[i] = singleTime;
-
-            String dateSelector = "body > div > div > section.content > div > div > ul.timeline > li:nth-child("+2*i+") > div > span";
-            Elements dateElement = doc.select(dateSelector);
-            String singleDate = Html.fromHtml(dateElement.toString()).toString();
-            dateList[i] = singleDate;
-
-            Log.d("TAG7", "i = " + i + "    Element = "+ contentList[i]+ "    Time = "+ timeList[i] + "    Date =  "+ dateList[i] + "\n\n");
+        if(keyCode==KeyEvent.KEYCODE_BACK){
+            moveTaskToBack(true);
+            return true;
         }
+
+        return super.onKeyDown(keyCode, event);
     }
+
+
+
+    public  void showNotification(View v){
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
+        builder.setContentTitle("Title");
+        builder.setAutoCancel(true);
+        builder.setSmallIcon(R.drawable.logo);
+        builder.setContentText("Text");
+        Uri sound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        builder.setSound(sound);
+
+        Intent intent = new Intent(this, SecondActivity.class);
+        android.support.v4.app.TaskStackBuilder stackBuilder = android.support.v4.app.TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(SecondActivity.class);
+        stackBuilder.addNextIntent(intent);
+        PendingIntent pendingIntent =  stackBuilder.getPendingIntent(0,PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(pendingIntent);
+        NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        manager.notify(0,builder.build());
+
+
+    }
+
+    class MyJavaScriptInterface
+    {
+
+        String[] contentList = new String[102];
+        String[] timeList = new String[102];
+        String[] dateList = new String[102];
+        String[] linkList = new String[102];
+
+        @SuppressWarnings("unused")
+        @JavascriptInterface
+        public void handleHtml(String html) {
+            Log.d("TAG56", html);
+            Document doc = Jsoup.parse(html);
+            int n = 40;
+            for(int i=1;i<=n;i++) {
+                String contentSelector = "body > div > div > section.content > div > div > ul.timeline > li:nth-child("+2*i+") > div > div > p:nth-child(1)";
+                Elements contentElement = doc.select(contentSelector);
+                String singleContent = Html.fromHtml(contentElement.toString()).toString();
+                contentList[i] = singleContent;
+
+                String timeSelector = "body > div > div > section.content > div > div > ul.timeline > li:nth-child("+(2*i-1)+") > span";
+                Elements timeElement = doc.select(timeSelector);
+                String singleTime = Html.fromHtml(timeElement.toString()).toString();
+                timeList[i] = singleTime;
+
+                String dateSelector = "body > div > div > section.content > div > div > ul.timeline > li:nth-child("+2*i+") > div > span";
+                Elements dateElement = doc.select(dateSelector);
+                String singleDate = Html.fromHtml(dateElement.toString()).toString();
+                dateList[i] = singleDate;
+
+                String linkSelector = "body > div > div > section.content > div > div > ul.timeline > li:nth-child("+2*i+") > div > h4 > a";
+                Elements linkElement = doc.select(linkSelector);
+                String singleLink = linkElement.attr("abs:href");
+                //String singleLink = Html.fromHtml(linkElement.toString()).toString();
+                linkList[i] = singleLink;
+
+                Log.d("TAG7", "i = " + i + "    Element = "+ contentList[i]+ "    Time = "+ timeList[i] + "    Date =  "+ dateList[i] + "    Link =   " + linkList[i] + "\n\n");
+            }
+
+        }
+
+    }
+
+
+
 }
+
 
 
 //----------------------------------------------UNUSED CODE---------------------------------------------
